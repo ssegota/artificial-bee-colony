@@ -113,13 +113,12 @@ for i in range(swarmSize):
 #start
 bestSolutions = []
 from matplotlib import pyplot as plt
-for i in range(1000):
+for i in range(100):
 
     nectarAmounts = []
     for b in Swarm:
         nectarAmounts.append(b.giveNectar())
 
-    
     bestSolutions.append(sorted(nectarAmounts, key=lambda x: x[1], reverse=True)[0])
         
     for b in Swarm:
