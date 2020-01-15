@@ -3,7 +3,7 @@ from random import uniform
 
 #mock solution space
 print("start memory allocation")
-area = np.random.rand(500,500,500)
+area = np.random.rand(2000,2000)
 print("memory allocation done")
 
 
@@ -124,9 +124,10 @@ class Bee():
 Swarm = []
 swarmSize=5
 best = []
-Runs = 5000
-minimalRuns = 2500
-maximumRunsWithoutChange = 500
+Runs = 1000
+minimalRuns = 500
+maximumRunsWithoutChange = 300
+saveImgs = False
 for i in range(swarmSize):
     Swarm.append(Bee(area))
     
@@ -137,8 +138,20 @@ for i in range(Runs):
 
     nectarAmounts = []
     for b in Swarm:
-
         nectarAmounts.append(b.giveNectar())
+    
+    pltarea = area.copy()
+    if saveImgs:
+        print(i,50*"-")
+        
+        plt.figure()
+        plt.title("Artificial Bee Colony\n"+"Swarm Size = "+str(swarmSize)+", Run = "+str(i))
+        plt.imshow(pltarea)
+        for n in nectarAmounts:
+            plt.plot(n[0][0], n[0][1], "or")
+        #plt.show()
+        plt.savefig(str(i)+".png")
+        plt.close()
 
     
     bestSolutions.append(sorted(nectarAmounts, key=lambda x: x[1], reverse=True)[0])
