@@ -173,6 +173,10 @@ print("Best possible solution", np.max(area))
 print("Best Solution Found: ", bestSolutions[-1])
 #print(bestSolutions.shape())
 plt.figure()
+plt.xlabel("Migrations")
+plt.ylabel("Nectar Amount")
+plt.title("Artificial Bee Colony finding best solution")
+
 plt.plot([x[1] for x in bestSolutions])
 plt.show()
 
