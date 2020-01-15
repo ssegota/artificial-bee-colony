@@ -108,7 +108,7 @@ class Bee():
         
     def shouldScout(self):
         #print(self.cycles)
-        if self.cycles>200:         
+        if self.cycles>self.cycleLimit:         
             if np.average(self.history[-50:])==self.history[-1:]:
                 #print("SCOUTS")
                 return True
@@ -123,7 +123,6 @@ swarmSize=5
 best = []
 
 for i in range(swarmSize):
-    print(i)
     Swarm.append(Bee(area))
     
 #start
@@ -138,13 +137,15 @@ for i in range(1000):
 
     
     bestSolutions.append(sorted(nectarAmounts, key=lambda x: x[1], reverse=True)[0])
-        
+    print(len(bestSolutions))    
     for b in Swarm:
         b.dance()
         b.look(Swarm)
         b.updateCycles()
         if b.shouldScout():
             b.scoutArea()
+    
+    
         
 
 #print(bestSolutions.shape())
