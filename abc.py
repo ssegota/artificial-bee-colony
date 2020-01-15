@@ -89,12 +89,15 @@ class Bee():
             randomCandidatePosition.append(np.random.randint(d))
             
         candidateSolution = []
+        
         for p,d,max_ in zip(self.position, randomCandidatePosition,self.dimensions):
+
             v = int(p+phi*(p)*(p-d))
+
             if v<0:
-                v=0
+                v=abs(v)%max_
             elif v>(max_-1): #remove hardcode
-                v=max_-1
+                v=v%max_
             candidateSolution.append(v)
         #get nectar amount
         candidateNectarAmount = self.calculateNectarAmount(position=candidateSolution)
@@ -121,14 +124,16 @@ class Bee():
 Swarm = []
 swarmSize=5
 best = []
-
+Runs = 5000
+minimalRuns = 2500
+maximumRunsWithoutChange = 500
 for i in range(swarmSize):
     Swarm.append(Bee(area))
     
 #start
 bestSolutions = []
 from matplotlib import pyplot as plt
-for i in range(1000):
+for i in range(Runs):
 
     nectarAmounts = []
     for b in Swarm:
@@ -137,7 +142,12 @@ for i in range(1000):
 
     
     bestSolutions.append(sorted(nectarAmounts, key=lambda x: x[1], reverse=True)[0])
-    print(len(bestSolutions))    
+    #print(len(bestSolutions))
+   
+    
+    if len(bestSolutions) > minimalRuns and round(np.average([x[1] for x in bestSolutions][-maximumRunsWithoutChange:]),5) == round(bestSolutions[-1][1],5):
+        print("End condition satisfied at", len(bestSolutions))
+        break
     for b in Swarm:
         b.dance()
         b.look(Swarm)
@@ -146,8 +156,8 @@ for i in range(1000):
             b.scoutArea()
     
     
-        
-
+print("Best possible solution", np.max(area))
+print("Best Solution Found: ", bestSolutions[-1])
 #print(bestSolutions.shape())
 plt.figure()
 plt.plot([x[1] for x in bestSolutions])
